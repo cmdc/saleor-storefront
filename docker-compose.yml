@@ -3,19 +3,22 @@ version: "3"
 services:
   saleor-storefront:
     container_name: saleor-storefront
-    build:
-      dockerfile: Dockerfile
-      args:
-        NEXT_PUBLIC_SALEOR_API_URL: ${NEXT_PUBLIC_SALEOR_API_URL}
-        NEXT_PUBLIC_STOREFRONT_URL: ${NEXT_PUBLIC_STOREFRONT_URL}
+    image: cmdcbusiness/coffee-storefront:latest
     restart: always
     ports:
       - 3000:3000
     networks:
       - saleor_network
+      - nginx-proxy
+      - saleor-backend-tier
 
   # Add more containers below (nginx, postgres, etc.)
 
 networks:
   saleor_network:
     external: false
+  nginx-proxy:
+    external: true
+  saleor-backend-tier:
+    external: true
+    name: saleor-platform_saleor-backend-tier

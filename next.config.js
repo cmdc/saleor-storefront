@@ -26,6 +26,12 @@ const config = {
 				// Allow all hostnames in development (restrict in production)
 				hostname: "*",
 			},
+			{
+				// Saleor API container (internal Docker network)
+				protocol: "http",
+				hostname: "api",
+				port: "8000",
+			},
 		],
 	},
 	typedRoutes: false,
