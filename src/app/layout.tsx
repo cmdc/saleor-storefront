@@ -6,6 +6,7 @@ import { DraftModeNotification } from "@/ui/components/draft-mode-notification";
 import { rootMetadata } from "@/lib/seo";
 import { localeConfig } from "@/config/locale";
 import { SpeedInsights } from "@vercel/speed-insights/next";
+import { GoogleTagManager } from "@next/third-parties/google";
 
 /**
  * Root metadata for the entire site.
@@ -18,6 +19,7 @@ export default function RootLayout(props: { children: ReactNode }) {
 
 	return (
 		<html lang={localeConfig.htmlLang} className={`${GeistSans.variable} ${GeistMono.variable} min-h-dvh`}>
+			<GoogleTagManager gtmId="GTM-MHD6G4VN" />
 			<body className="min-h-dvh font-sans">
 				{children}
 				<Suspense>
