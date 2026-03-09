@@ -4,25 +4,25 @@
 
 export const localeConfig = {
 	/** Locale for Intl APIs (number/date formatting) - BCP 47 format */
-	default: "en-US",
+	default: "it-IT",
 
 	/** Language code for Saleor API - controls translated content */
-	graphqlLanguageCode: "EN_US" as const,
+	graphqlLanguageCode: "IT" as const,
 
 	/** HTML lang attribute */
-	htmlLang: "en",
+	htmlLang: "it",
 
 	/** Open Graph locale */
-	ogLocale: "en_US",
+	ogLocale: "it_IT",
 
 	/** Available locales (for future i18n) */
-	available: ["en-US"] as const,
+	available: ["it-IT"] as const,
 
 	/**
 	 * Fallback currency - ONLY used when API returns null (shouldn't happen).
 	 * Real currency comes from the channel via Saleor API.
 	 */
-	fallbackCurrency: "USD",
+	fallbackCurrency: "EUR",
 } as const;
 
 /**
