@@ -1,8 +1,7 @@
 import { GeistSans } from "geist/font/sans";
 import { GeistMono } from "geist/font/mono";
 import "./globals.css";
-import { Suspense, type ReactNode } from "react";
-import { DraftModeNotification } from "@/ui/components/draft-mode-notification";
+import { type ReactNode } from "react";
 import { rootMetadata } from "@/lib/seo";
 import { localeConfig } from "@/config/locale";
 import { SpeedInsights } from "@vercel/speed-insights/next";
@@ -22,9 +21,6 @@ export default function RootLayout(props: { children: ReactNode }) {
 			<GoogleTagManager gtmId="GTM-MHD6G4VN" />
 			<body className="min-h-dvh font-sans">
 				{children}
-				<Suspense>
-					<DraftModeNotification />
-				</Suspense>
 				<SpeedInsights />
 			</body>
 		</html>
