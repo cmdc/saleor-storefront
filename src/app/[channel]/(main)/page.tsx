@@ -9,7 +9,8 @@ import { Logo } from "@/ui/components/shared/logo";
 
 export const metadata = {
 	title: "Sophie Coffee | Il Piacere Condiviso",
-	description: "Caffè etico, sostenibile e di alta qualità, tostato con maestria italiana dalle terre vulcaniche del Camerun.",
+	description:
+		"Caffè etico, sostenibile e di alta qualità, tostato con maestria italiana dalle terre vulcaniche del Camerun.",
 };
 
 async function getFeaturedProducts(channel: string) {
@@ -36,30 +37,104 @@ async function getFeaturedProducts(channel: string) {
 const translations = {
 	it: {
 		heroTitle: "Il Piacere Condiviso",
-		heroSubtitle: "Caffè etico, sostenibile e di alta qualità, tostato con maestria italiana dalle terre vulcaniche del Camerun.",
+		heroSubtitle:
+			"Caffè etico, sostenibile e di alta qualità, tostato con maestria italiana dalle terre vulcaniche del Camerun.",
 		heroCta: "Scopri le nostre origini",
 		features: [
 			{ title: "Commercio Diretto", desc: "Senza intermediari, garantiamo dignità ai contadini locali." },
 			{ title: "Terroir Vulcanico", desc: "Chicchi coltivati sopra i 1500m in Camerun." },
-			{ title: "Sostenibilità", desc: "Packaging compostabile e spedizioni a basse emissioni." }
+			{ title: "Sostenibilità", desc: "Packaging compostabile e spedizioni a basse emissioni." },
 		],
-		productsTitle: "Le Nostre Miscele"
+		productsTitle: "Le Nostre Miscele",
 	},
 	en: {
 		heroTitle: "The Shared Pleasure",
-		heroSubtitle: "Ethical, sustainable, high-quality coffee, masterfully roasted in Italy from the volcanic lands of Cameroon.",
+		heroSubtitle:
+			"Ethical, sustainable, high-quality coffee, masterfully roasted in Italy from the volcanic lands of Cameroon.",
 		heroCta: "Discover our origins",
 		features: [
 			{ title: "Direct Trade", desc: "No middlemen, ensuring dignity for local farmers." },
 			{ title: "Volcanic Terroir", desc: "Beans grown above 1500m in Cameroon." },
-			{ title: "Sustainability", desc: "Compostable packaging and low-emission shipping." }
+			{ title: "Sustainability", desc: "Compostable packaging and low-emission shipping." },
 		],
-		productsTitle: "Our Blends"
-	}
+		productsTitle: "Our Blends",
+	},
 };
 
-export default async function Page(props: { params: Promise<{ channel: string }> }) {
-	const { channel } = await props.params;
+export default function Page(props: { params: Promise<{ channel: string }> }) {
+	return (
+		<>
+			<Suspense fallback={<HeroSkeleton />}>
+				<HeroSection params={props.params} />
+			</Suspense>
+
+			{/* Products Grid */}
+			<section className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
+				<Suspense
+					fallback={
+						<ul
+							role="list"
+							data-testid="ProductList"
+							className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3"
+						>
+							{Array.from({ length: 12 }).map((_, i) => (
+								<li key={i} className="animate-pulse">
+									<div className="aspect-square overflow-hidden bg-secondary" />
+									<div className="mt-2 flex justify-between">
+										<div>
+											<div className="mt-1 h-4 w-32 rounded bg-secondary" />
+											<div className="mt-1 h-4 w-20 rounded bg-secondary" />
+										</div>
+										<div className="mt-1 h-4 w-16 rounded bg-secondary" />
+									</div>
+								</li>
+							))}
+						</ul>
+					}
+				>
+					<FeaturedProducts params={props.params} />
+				</Suspense>
+			</section>
+		</>
+	);
+}
+
+function HeroSkeleton() {
+	return (
+		<>
+			<section className="relative overflow-hidden bg-secondary">
+				<div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 sm:py-24 lg:px-8 lg:py-32">
+					<div className="flex flex-col items-center gap-12 lg:flex-row lg:items-center">
+						<div className="flex flex-1 flex-col items-center text-center lg:items-start lg:text-left">
+							<div className="mb-6 h-20 w-20 animate-pulse rounded-full bg-secondary sm:h-28 sm:w-28" />
+							<div className="h-16 w-3/4 animate-pulse rounded bg-secondary" />
+							<div className="mt-6 h-8 w-full max-w-xl animate-pulse rounded bg-secondary" />
+						</div>
+						<div className="relative w-full flex-1 lg:max-w-xl">
+							<div className="aspect-[4/3] w-full animate-pulse rounded-2xl bg-secondary" />
+						</div>
+					</div>
+				</div>
+			</section>
+			<section className="bg-success py-16">
+				<div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+					<div className="grid grid-cols-1 gap-8 md:grid-cols-3">
+						{[1, 2, 3].map((i) => (
+							<div key={i} className="flex flex-col items-center text-center">
+								<div className="bg-success-foreground/20 mb-4 h-12 w-12 animate-pulse rounded-full" />
+								<div className="bg-success-foreground/20 h-6 w-32 animate-pulse rounded" />
+								<div className="bg-success-foreground/20 mt-3 h-4 w-48 animate-pulse rounded" />
+							</div>
+						))}
+					</div>
+				</div>
+			</section>
+		</>
+	);
+}
+
+async function HeroSection({ params }: { params: Promise<{ channel: string }> }) {
+	const { channel } = await params;
 	const isItalian = channel.includes("it") || channel === "default-channel";
 	const t = isItalian ? translations.it : translations.en;
 
@@ -69,7 +144,6 @@ export default async function Page(props: { params: Promise<{ channel: string }>
 			<section className="relative overflow-hidden bg-secondary">
 				<div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 sm:py-24 lg:px-8 lg:py-32">
 					<div className="flex flex-col items-center gap-12 lg:flex-row lg:items-center">
-						
 						{/* Text Content */}
 						<div className="flex flex-1 flex-col items-center text-center lg:items-start lg:text-left">
 							<Logo className="mb-6 h-20 w-20 sm:h-28 sm:w-28" transparent />
@@ -101,10 +175,9 @@ export default async function Page(props: { params: Promise<{ channel: string }>
 									className="object-cover"
 									sizes="(max-width: 1024px) 100vw, 50vw"
 								/>
-								<div className="absolute inset-0 rounded-2xl ring-1 ring-inset ring-foreground/10" />
+								<div className="ring-foreground/10 absolute inset-0 rounded-2xl ring-1 ring-inset" />
 							</div>
 						</div>
-
 					</div>
 				</div>
 			</section>
@@ -132,38 +205,14 @@ export default async function Page(props: { params: Promise<{ channel: string }>
 				</div>
 			</section>
 
-			{/* Products Grid */}
-			<section className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
+			{/* Products title */}
+			<div className="mx-auto max-w-7xl px-4 pt-16 sm:px-6 lg:px-8">
 				<div className="mb-10 text-center">
-					<h2 className="text-3xl font-bold tracking-tight text-brand-coffee sm:text-4xl">
+					<h2 className="text-brand-coffee text-3xl font-bold tracking-tight sm:text-4xl">
 						{t.productsTitle}
 					</h2>
 				</div>
-				<Suspense
-					fallback={
-						<ul
-							role="list"
-							data-testid="ProductList"
-							className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3"
-						>
-							{Array.from({ length: 12 }).map((_, i) => (
-								<li key={i} className="animate-pulse">
-									<div className="aspect-square overflow-hidden bg-secondary" />
-									<div className="mt-2 flex justify-between">
-										<div>
-											<div className="mt-1 h-4 w-32 rounded bg-secondary" />
-											<div className="mt-1 h-4 w-20 rounded bg-secondary" />
-										</div>
-										<div className="mt-1 h-4 w-16 rounded bg-secondary" />
-									</div>
-								</li>
-							))}
-						</ul>
-					}
-				>
-					<FeaturedProducts params={props.params} />
-				</Suspense>
-			</section>
+			</div>
 		</>
 	);
 }

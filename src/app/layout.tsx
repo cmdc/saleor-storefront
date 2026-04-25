@@ -18,8 +18,8 @@ export default function RootLayout(props: { children: ReactNode }) {
 
 	return (
 		<html lang={localeConfig.htmlLang} className={`${GeistSans.variable} ${GeistMono.variable} min-h-dvh`}>
-			<GoogleTagManager gtmId="GTM-MHD6G4VN" />
 			<body className="min-h-dvh font-sans">
+				<GoogleTagManager gtmId="GTM-MHD6G4VN" />
 				{children}
 				<SpeedInsights />
 			</body>
