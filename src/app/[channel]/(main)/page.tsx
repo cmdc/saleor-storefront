@@ -1,7 +1,7 @@
 import { Suspense } from "react";
 import Image from "next/image";
 import { cacheLife, cacheTag } from "next/cache";
-import { ProductListPaginatedDocument, ProductOrderField, OrderDirection } from "@/gql/graphql";
+import { ProductListPaginatedDocument } from "@/gql/graphql";
 import { executePublicGraphQL } from "@/lib/graphql";
 import { ProductList } from "@/ui/components/product-list";
 import { Leaf, HeartHandshake, Coffee, ArrowRight } from "lucide-react";
