@@ -28,35 +28,35 @@
  * ============================================ */
 :root {
 	/* --- Backgrounds --- */
-	--background: oklch(0.98 0.005 90); /* Page background - warm off-white */
-	--card: oklch(1 0 0); /* Card surfaces - pure white */
-	--popover: oklch(1 0 0); /* Popover/dropdown backgrounds */
-	--secondary: oklch(0.96 0.003 90); /* Secondary surfaces */
-	--muted: oklch(0.94 0.003 90); /* Muted/disabled backgrounds */
-	--accent: oklch(0.94 0.003 90); /* Accent backgrounds */
+	--background: #FFFFFF; /* Bianco Puro Prodotto */
+	--card: #FFFFFF;
+	--popover: #FFFFFF;
+	--secondary: #F8F1E7; /* Crema Piacere Condiviso */
+	--muted: #F8F1E7;
+	--accent: #F8F1E7;
 
 	/* --- Foregrounds (Text Colors) --- */
-	--foreground: oklch(0.12 0 0); /* Primary text - near black */
-	--card-foreground: oklch(0.12 0 0);
-	--popover-foreground: oklch(0.12 0 0);
-	--secondary-foreground: oklch(0.12 0 0);
-	--muted-foreground: oklch(0.45 0 0); /* Secondary/muted text */
-	--accent-foreground: oklch(0.12 0 0);
+	--foreground: #3C2A21; /* Marrone Caffè Sophie */
+	--card-foreground: #3C2A21;
+	--popover-foreground: #3C2A21;
+	--secondary-foreground: #3C2A21;
+	--muted-foreground: #666666;
+	--accent-foreground: #3C2A21;
 
 	/* --- Primary (CTA buttons, links) --- */
-	--primary: oklch(0.12 0 0); /* Near black */
-	--primary-foreground: oklch(0.98 0 0); /* White text on primary */
+	--primary: #C19A6B; /* Ocra Terra Camerun */
+	--primary-foreground: #FFFFFF;
 
 	/* --- Semantic Colors --- */
-	--destructive: oklch(0.55 0.2 25); /* Error/delete - red */
-	--destructive-foreground: oklch(0.98 0 0);
-	--success: oklch(0.55 0.15 145); /* Success - green */
-	--success-foreground: oklch(0.98 0 0);
+	--destructive: #E53935;
+	--destructive-foreground: #FFFFFF;
+	--success: #2E5136; /* Verde Chioma Foresta */
+	--success-foreground: #FFFFFF;
 
 	/* --- Interactive Elements --- */
-	--border: oklch(0.9 0.003 90); /* Border color */
-	--input: oklch(0.9 0.003 90); /* Input borders */
-	--ring: oklch(0.12 0 0); /* Focus ring color */
+	--border: #D3D3D3; /* Grigio Struttura UI */
+	--input: #D3D3D3;
+	--ring: #3C2A21;
 
 	/* --- Layout --- */
 	--radius: 0.5rem; /* Base border radius (8px) */
@@ -87,33 +87,33 @@
  * ============================================ */
 .dark {
 	/* --- Backgrounds --- */
-	--background: oklch(0.12 0 0);
-	--card: oklch(0.16 0 0);
-	--popover: oklch(0.16 0 0);
-	--secondary: oklch(0.22 0 0);
-	--muted: oklch(0.22 0 0);
-	--accent: oklch(0.22 0 0);
+	--background: #3C2A21; /* Marrone Caffè Sophie */
+	--card: #2c1e18;
+	--popover: #2c1e18;
+	--secondary: #4a352a;
+	--muted: #4a352a;
+	--accent: #4a352a;
 
 	/* --- Foregrounds --- */
-	--foreground: oklch(0.98 0 0);
-	--card-foreground: oklch(0.98 0 0);
-	--popover-foreground: oklch(0.98 0 0);
-	--secondary-foreground: oklch(0.98 0 0);
-	--muted-foreground: oklch(0.65 0 0);
-	--accent-foreground: oklch(0.98 0 0);
+	--foreground: #F8F1E7; /* Crema Piacere Condiviso */
+	--card-foreground: #F8F1E7;
+	--popover-foreground: #F8F1E7;
+	--secondary-foreground: #F8F1E7;
+	--muted-foreground: #D3D3D3; /* Grigio Struttura UI */
+	--accent-foreground: #F8F1E7;
 
 	/* --- Primary --- */
-	--primary: oklch(0.98 0 0);
-	--primary-foreground: oklch(0.12 0 0);
+	--primary: #C19A6B; /* Ocra Terra Camerun */
+	--primary-foreground: #FFFFFF;
 
 	/* --- Semantic Colors --- */
-	--destructive: oklch(0.45 0.18 25);
-	--destructive-foreground: oklch(0.98 0 0);
-	--success: oklch(0.65 0.15 145);
-	--success-foreground: oklch(0.12 0 0);
+	--destructive: #ef4444;
+	--destructive-foreground: #FFFFFF;
+	--success: #2E5136; /* Verde Chioma Foresta */
+	--success-foreground: #FFFFFF;
 
 	/* --- Interactive Elements --- */
-	--border: oklch(0.26 0 0);
-	--input: oklch(0.26 0 0);
-	--ring: oklch(0.98 0 0);
+	--border: #5a4032;
+	--input: #5a4032;
+	--ring: #C19A6B;
 }

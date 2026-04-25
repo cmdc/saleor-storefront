@@ -2,7 +2,6 @@ import { Suspense } from "react";
 import { notFound } from "next/navigation";
 import { type Metadata } from "next";
 import { ErrorBoundary } from "react-error-boundary";
-import edjsHTML from "editorjs-html";
 import xss from "xss";
 
 import { executePublicGraphQL } from "@/lib/graphql";
@@ -10,6 +9,7 @@ import { ProductDetailsDocument, type ProductDetailsQuery } from "@/gql/graphql"
 import { buildPageMetadata, buildProductJsonLd } from "@/lib/seo";
 import { CACHE_PROFILES, applyCacheProfile } from "@/lib/cache-manifest";
 import { Breadcrumbs } from "@/ui/components/breadcrumbs";
+import { parseEditorJSToHtml } from "@/lib/editorjs";
 import {
 	ProductGallery,
 	ProductAttributes,
@@ -82,8 +82,6 @@ export async function generateMetadata(props: {
 // ============================================================================
 // Page Component
 // ============================================================================
-
-const parser = edjsHTML();
 
 /**
  * Sync page shell with dedicated Suspense boundary.
@@ -236,12 +234,10 @@ function ProductPageSkeleton() {
 function parseDescription(description: string | null | undefined): string[] | null {
 	if (!description) return null;
 
-	try {
-		const parsed = parser.parse(JSON.parse(description));
-		return parsed.map((html: string) => xss(html));
-	} catch {
-		return [xss(`<p>${description}</p>`)];
-	}
+	const html = parseEditorJSToHtml(description);
+	if (html) return html;
+
+	return [xss(`<p>${description}</p>`)];
 }
 
 function extractProductAttributes(product: NonNullable<ProductDetailsQuery["product"]>) {

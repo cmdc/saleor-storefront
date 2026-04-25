@@ -11,7 +11,7 @@ export const EmptyCartPage = () => {
 			<header className="border-b border-border bg-background">
 				<div className="mx-auto max-w-7xl px-4 py-4 sm:px-6 lg:px-8">
 					<Link href="/" className="flex items-center">
-						<Logo className="h-5 w-auto text-foreground" />
+						<Logo className="h-10 w-10 text-foreground" />
 					</Link>
 				</div>
 			</header>

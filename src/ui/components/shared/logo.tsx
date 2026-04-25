@@ -2,10 +2,7 @@
  * Shared Logo Component
  *
  * Single source of truth for the storefront logo.
- * Uses external SVG files for better caching and smaller bundle size.
- *
- * - /public/logo.svg: dark logo for light backgrounds
- * - /public/logo-dark.svg: light logo for dark backgrounds
+ * Uses the Sophie Coffee logo.
  *
  * @example
  * <Logo className="h-7 w-auto" />                    // Header (auto light/dark)
@@ -18,43 +15,32 @@ interface LogoProps {
 	ariaLabel?: string;
 	/** Invert colors (for dark backgrounds like footer) */
 	inverted?: boolean;
+	/** Transparent background */
+	transparent?: boolean;
 }
 
 /**
- * Paper + Saleor combined logo (100x23, aspect ratio ~4.35:1)
- * Automatically switches between light/dark mode versions.
+ * Sophie Coffee combined logo (650x650, aspect ratio 1:1)
  *
  * Uses explicit width/height + aspect-ratio to prevent CLS while
  * allowing flexible sizing via className.
  */
-export const Logo = ({ className, ariaLabel = "Sophie Coffee", inverted = false }: LogoProps) => {
-	// When inverted, swap the light/dark mode logic
-	const lightModeLogo = inverted ? "/logo-dark.svg" : "/logo.svg";
-	const darkModeLogo = inverted ? "/logo.svg" : "/logo-dark.svg";
+export const Logo = ({ className, ariaLabel = "Sophie Coffee", inverted = false, transparent = false }: LogoProps) => {
+	const logoSrc = transparent ? "/logo-transparent.png" : inverted ? "/logo-white.png" : "/logo.png";
 
 	// Base styles: preserve aspect ratio to prevent CLS
 	// Height classes (e.g., h-7) will work correctly with w-auto
-	const baseStyles = "aspect-[100/23]";
+	const baseStyles = "aspect-square object-contain transition-opacity duration-200";
 
 	return (
 		<>
-			{/* Light mode */}
 			{/* eslint-disable-next-line @next/next/no-img-element */}
 			<img
-				src={lightModeLogo}
+				src={logoSrc}
 				alt={ariaLabel}
-				width={100}
-				height={23}
-				className={`dark:hidden ${baseStyles} ${className ?? ""}`}
-			/>
-			{/* Dark mode */}
-			{/* eslint-disable-next-line @next/next/no-img-element */}
-			<img
-				src={darkModeLogo}
-				alt={ariaLabel}
-				width={100}
-				height={23}
-				className={`hidden dark:block ${baseStyles} ${className ?? ""}`}
+				width={650}
+				height={650}
+				className={`${baseStyles} ${className ?? ""}`}
 			/>
 		</>
 	);

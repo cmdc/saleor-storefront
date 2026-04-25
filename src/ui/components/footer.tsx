@@ -67,7 +67,7 @@ export async function Footer({ channel }: { channel: string }) {
 					{/* Brand */}
 					<div className="col-span-2 md:col-span-1">
 						<Link href={`/${channel}`} prefetch={false} className="mb-4 inline-block">
-							<Logo className="h-7 w-auto" inverted />
+							<Logo className="h-12 w-12" inverted />
 						</Link>
 						<p className="mt-4 max-w-xs text-sm leading-relaxed text-neutral-400">
 							Specialty coffee, roasted with passion. Delivered to your door.
@@ -146,13 +146,13 @@ export async function Footer({ channel }: { channel: string }) {
 								<ul className="space-y-3">
 									{defaultFooterLinks.support.map((link) => (
 										<li key={link.href}>
-											<Link
-												href={link.href}
+											<LinkWithChannel
+												href={`/pages${link.href}`}
 												prefetch={false}
 												className="text-sm text-neutral-400 transition-colors hover:text-neutral-200"
 											>
 												{link.label}
-											</Link>
+											</LinkWithChannel>
 										</li>
 									))}
 								</ul>
@@ -162,13 +162,13 @@ export async function Footer({ channel }: { channel: string }) {
 								<ul className="space-y-3">
 									{defaultFooterLinks.company.map((link) => (
 										<li key={link.href}>
-											<Link
-												href={link.href}
+											<LinkWithChannel
+												href={`/pages${link.href}`}
 												prefetch={false}
 												className="text-sm text-neutral-400 transition-colors hover:text-neutral-200"
 											>
 												{link.label}
-											</Link>
+											</LinkWithChannel>
 										</li>
 									))}
 								</ul>
@@ -193,20 +193,20 @@ export async function Footer({ channel }: { channel: string }) {
 						<CopyrightText />
 					</p>
 					<div className="flex items-center gap-6">
-						<Link
-							href="/privacy"
+						<LinkWithChannel
+							href="/pages/privacy"
 							prefetch={false}
 							className="text-xs text-neutral-500 transition-colors hover:text-neutral-300"
 						>
 							Privacy Policy
-						</Link>
-						<Link
-							href="/terms"
+						</LinkWithChannel>
+						<LinkWithChannel
+							href="/pages/terms"
 							prefetch={false}
 							className="text-xs text-neutral-500 transition-colors hover:text-neutral-300"
 						>
 							Terms of Service
-						</Link>
+						</LinkWithChannel>
 					</div>
 				</div>
 			</div>

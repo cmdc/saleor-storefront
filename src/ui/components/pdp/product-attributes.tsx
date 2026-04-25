@@ -1,5 +1,7 @@
 "use client";
 
+import { type ReactNode } from "react";
+import { useParams } from "next/navigation";
 import { Shirt, Leaf, Droplets, Ruler, Sparkles } from "lucide-react";
 import {
 	Accordion,
@@ -8,7 +10,6 @@ import {
 	AccordionContent,
 } from "@/ui/components/ui/accordion";
 import { Badge } from "@/ui/components/ui/badge";
-import { type ReactNode } from "react";
 
 interface Attribute {
 	name: string;
@@ -34,8 +35,33 @@ const attributeIcons: Record<string, ReactNode> = {
 	"Key Features": <Sparkles className="h-4 w-4" />,
 };
 
-function formatValue(value: string | boolean | string[]): ReactNode {
-	if (typeof value === "boolean") return value ? "Yes" : "No";
+const translations = {
+	it: {
+		description: "Descrizione",
+		productDetails: "Dettagli Prodotto",
+		yes: "Sì",
+		no: "No",
+		shipping: {
+			title: "Spedizione e Resi",
+			freeShipping: "Spedizione gratuita per ordini superiori a 100€. Consegna standard in 3-5 giorni lavorativi.",
+			returns: "Resi entro 30 giorni (solo per confezioni alimentari sigillate e integre)."
+		}
+	},
+	en: {
+		description: "Description",
+		productDetails: "Product Details",
+		yes: "Yes",
+		no: "No",
+		shipping: {
+			title: "Shipping & Returns",
+			freeShipping: "Free shipping on orders over €100. Standard delivery 3-5 business days.",
+			returns: "Returns within 30 days (only for sealed and intact food packages)."
+		}
+	}
+};
+
+function formatValue(value: string | boolean | string[], t: typeof translations.en): ReactNode {
+	if (typeof value === "boolean") return value ? t.yes : t.no;
 	if (Array.isArray(value)) {
 		return (
 			<div className="flex flex-wrap justify-end gap-1">
@@ -55,6 +81,11 @@ export function ProductAttributes({
 	attributes = [],
 	careInstructions,
 }: ProductAttributesProps) {
+	const params = useParams();
+	const channel = (params?.channel as string) || "it";
+	const isItalian = channel.includes("it") || channel === "default-channel";
+	const t = isItalian ? translations.it : translations.en;
+
 	// Filter out variant attributes that are shown elsewhere (Size, Color)
 	const displayAttributes = attributes.filter((attr) => !["Size", "Color"].includes(attr.name));
 
@@ -88,7 +119,7 @@ export function ProductAttributes({
 										{attributeIcons[attr.name]}
 										{attr.name}
 									</span>
-									<span className="text-right font-medium">{formatValue(attr.value)}</span>
+									<span className="text-right font-medium">{formatValue(attr.value, t)}</span>
 								</div>
 							))}
 						</div>
@@ -109,11 +140,11 @@ export function ProductAttributes({
 
 			<AccordionItemWithContext value="shipping" className="border-border">
 				<AccordionTrigger className="py-4 text-sm font-medium hover:no-underline">
-					Shipping & Returns
+					{t.shipping.title}
 				</AccordionTrigger>
 				<AccordionContent className="leading-relaxed text-muted-foreground">
-					<p className="mb-2">Free shipping on orders over €100. Standard delivery 3-5 business days.</p>
-					<p>Free returns within 30 days of purchase. Items must be unworn with tags attached.</p>
+					<p className="mb-2">{t.shipping.freeShipping}</p>
+					<p>{t.shipping.returns}</p>
 				</AccordionContent>
 			</AccordionItemWithContext>
 		</Accordion>
