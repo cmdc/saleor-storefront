@@ -1,6 +1,6 @@
 import { Suspense } from "react";
-import Image from "next/image";
 import { cacheLife, cacheTag } from "next/cache";
+import Image from "next/image";
 import { ProductListPaginatedDocument } from "@/gql/graphql";
 import { executePublicGraphQL } from "@/lib/graphql";
 import { ProductList } from "@/ui/components/product-list";
@@ -14,10 +14,6 @@ export const metadata = {
 };
 
 async function getFeaturedProducts(channel: string) {
-	"use cache";
-	cacheLife("minutes");
-	cacheTag("products:all");
-
 	const result = await executePublicGraphQL(ProductListPaginatedDocument, {
 		variables: {
 			channel,
@@ -61,10 +57,16 @@ const translations = {
 	},
 };
 
-const t = translations.it;
 const defaultChannel = process.env.NEXT_PUBLIC_DEFAULT_CHANNEL ?? "it";
 
-export default function Page(props: { params: Promise<{ channel: string }> }) {
+async function HomepageContent({ channel }: { channel: string }) {
+	"use cache";
+	cacheLife("minutes");
+	cacheTag("homepage");
+
+	const t = translations[channel.includes("it") || channel === "default-channel" ? "it" : "en"];
+	const products = await getFeaturedProducts(channel);
+
 	return (
 		<>
 			{/* Custom Brand Hero */}
@@ -139,38 +141,53 @@ export default function Page(props: { params: Promise<{ channel: string }> }) {
 						{t.productsTitle}
 					</h2>
 				</div>
-				<Suspense
-					fallback={
-						<ul
-							role="list"
-							data-testid="ProductList"
-							className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3"
-						>
-							{Array.from({ length: 12 }).map((_, i) => (
-								<li key={i} className="animate-pulse">
-									<div className="aspect-square overflow-hidden bg-secondary" />
-									<div className="mt-2 flex justify-between">
-										<div>
-											<div className="mt-1 h-4 w-32 rounded bg-secondary" />
-											<div className="mt-1 h-4 w-20 rounded bg-secondary" />
-										</div>
-										<div className="mt-1 h-4 w-16 rounded bg-secondary" />
-									</div>
-								</li>
-							))}
-						</ul>
-					}
-				>
-					<FeaturedProducts params={props.params} />
-				</Suspense>
+				{products.length > 0 ? (
+					<ProductList products={products} />
+				) : (
+					<p className="py-16 text-center text-muted-foreground">Prodotti in arrivo...</p>
+				)}
 			</section>
 		</>
 	);
 }
 
-async function FeaturedProducts({ params: paramsPromise }: { params: Promise<{ channel: string }> }) {
-	const { channel } = await paramsPromise;
-	const products = await getFeaturedProducts(channel);
+function HomepageSkeleton() {
+	return (
+		<>
+			<section className="relative overflow-hidden bg-secondary">
+				<div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 sm:py-24 lg:px-8 lg:py-32">
+					<div className="flex flex-col items-center gap-12 lg:flex-row">
+						<div className="flex flex-1 flex-col items-center gap-6">
+							<div className="bg-secondary-foreground/10 h-28 w-28 animate-pulse rounded-full" />
+							<div className="bg-secondary-foreground/10 h-16 w-3/4 animate-pulse rounded" />
+							<div className="bg-secondary-foreground/10 h-8 w-full max-w-xl animate-pulse rounded" />
+						</div>
+						<div className="w-full flex-1 lg:max-w-xl">
+							<div className="bg-secondary-foreground/10 aspect-[4/3] w-full animate-pulse rounded-2xl" />
+						</div>
+					</div>
+				</div>
+			</section>
+			<section className="bg-success py-16">
+				<div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+					<div className="grid grid-cols-1 gap-8 md:grid-cols-3">
+						{[1, 2, 3].map((i) => (
+							<div key={i} className="flex flex-col items-center gap-4">
+								<div className="bg-success-foreground/20 h-12 w-12 animate-pulse rounded-full" />
+								<div className="bg-success-foreground/20 h-6 w-32 animate-pulse rounded" />
+							</div>
+						))}
+					</div>
+				</div>
+			</section>
+		</>
+	);
+}
 
-	return <ProductList products={products} />;
+export default function Page(_props: { params: Promise<{ channel: string }> }) {
+	return (
+		<Suspense fallback={<HomepageSkeleton />}>
+			<HomepageContent channel={defaultChannel} />
+		</Suspense>
+	);
 }
