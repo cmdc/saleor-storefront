@@ -27,10 +27,11 @@ export const brandConfig = {
 	defaultBrand: "Sophie Coffee",
 
 	/** Tagline/description for the store */
-	tagline: "Specialty coffee, delivered to your door.",
+	tagline: "Caffè etico, sostenibile e di alta qualità dalle terre vulcaniche del Camerun.",
 
 	/** Homepage meta description */
-	description: "Sophie Coffee — specialty coffee roasted with passion.",
+	description:
+		"Sophie Coffee — caffè etico e sostenibile, tostato con maestria italiana dalle terre vulcaniche del Camerun.",
 
 	/** Logo aria-label for accessibility */
 	logoAriaLabel: "Sophie Coffee",

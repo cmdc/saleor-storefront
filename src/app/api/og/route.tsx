@@ -1,24 +1,24 @@
 import { ImageResponse } from "next/og";
 import { type NextRequest } from "next/server";
+import { readFileSync } from "fs";
+import { join } from "path";
 
 /**
- * Dynamic OG Image Generator
- * Note: Cache Components requires Node.js runtime (Edge not supported)
- *
- * Generates branded Open Graph images for social media sharing.
- * Used for product pages when no product image is available,
- * or for custom branded sharing images.
+ * Dynamic OG Image Generator — Sophie Coffee branding
  *
  * @example
- * /api/og?title=Product%20Name&price=€29.99
- * /api/og?title=Summer%20Collection&subtitle=New%20Arrivals
+ * /api/og?title=Miscela+Vulcanica&price=€14.90
+ * /api/og?title=Le+Nostre+Origini&subtitle=Camerun
  */
 export async function GET(request: NextRequest) {
 	const { searchParams } = request.nextUrl;
 
-	const title = searchParams.get("title") || "Saleor Store";
-	const subtitle = searchParams.get("subtitle") || "";
+	const title = searchParams.get("title") || "Sophie Coffee";
+	const subtitle = searchParams.get("subtitle") || "il piacere condiviso";
 	const price = searchParams.get("price") || "";
+
+	const logoData = readFileSync(join(process.cwd(), "public", "logo.png"));
+	const logoBase64 = `data:image/png;base64,${logoData.toString("base64")}`;
 
 	return new ImageResponse(
 		(
@@ -27,64 +27,70 @@ export async function GET(request: NextRequest) {
 					height: "100%",
 					width: "100%",
 					display: "flex",
-					flexDirection: "column",
+					flexDirection: "row",
 					alignItems: "center",
-					justifyContent: "center",
-					backgroundColor: "#FAF9F7", // --background
-					fontFamily: "system-ui, sans-serif",
+					backgroundColor: "#F5EFE6",
+					fontFamily: "system-ui, serif",
+					padding: "60px",
+					gap: "48px",
 				}}
 			>
-				{/* Background pattern */}
+				{/* Logo */}
 				<div
 					style={{
-						position: "absolute",
-						inset: 0,
-						backgroundImage: "radial-gradient(circle at 25px 25px, #E5E4DF 2px, transparent 0)",
-						backgroundSize: "50px 50px",
-						opacity: 0.5,
+						display: "flex",
+						alignItems: "center",
+						justifyContent: "center",
+						flexShrink: 0,
+					}}
+				>
+					{/* eslint-disable-next-line @next/next/no-img-element */}
+					<img src={logoBase64} alt="Sophie Coffee" width={200} height={200} />
+				</div>
+
+				{/* Divider */}
+				<div
+					style={{
+						width: "2px",
+						height: "260px",
+						backgroundColor: "#4A2C17",
+						opacity: 0.2,
+						flexShrink: 0,
 					}}
 				/>
 
-				{/* Content container */}
+				{/* Text */}
 				<div
 					style={{
 						display: "flex",
 						flexDirection: "column",
-						alignItems: "center",
 						justifyContent: "center",
-						padding: "60px",
-						maxWidth: "80%",
-						textAlign: "center",
+						flex: 1,
 					}}
 				>
-					{/* Logo/Brand */}
+					{/* Brand */}
 					<div
 						style={{
-							display: "flex",
-							alignItems: "center",
-							marginBottom: "40px",
-							fontSize: "24px",
+							fontSize: "20px",
 							fontWeight: "600",
-							color: "#1A1A1A",
-							letterSpacing: "-0.02em",
+							color: "#7A5C3A",
+							letterSpacing: "0.08em",
+							textTransform: "uppercase",
+							marginBottom: "16px",
 						}}
 					>
-						{/* Simple sparkle icon */}
-						<svg width="32" height="32" viewBox="0 0 24 24" fill="none" style={{ marginRight: "12px" }}>
-							<path d="M12 2L14.4 9.6L22 12L14.4 14.4L12 22L9.6 14.4L2 12L9.6 9.6L12 2Z" fill="#1A1A1A" />
-						</svg>
-						saleor
+						Sophie Coffee
 					</div>
 
 					{/* Title */}
 					<div
 						style={{
-							fontSize: "64px",
-							fontWeight: "700",
-							color: "#1A1A1A",
+							fontSize: title.length > 30 ? "48px" : "60px",
+							fontWeight: "800",
+							color: "#4A2C17",
 							lineHeight: 1.1,
-							letterSpacing: "-0.03em",
-							marginBottom: subtitle || price ? "20px" : "0",
+							letterSpacing: "-0.02em",
+							marginBottom: "16px",
 						}}
 					>
 						{title}
@@ -94,8 +100,9 @@ export async function GET(request: NextRequest) {
 					{subtitle && (
 						<div
 							style={{
-								fontSize: "28px",
-								color: "#737373", // --muted-foreground
+								fontSize: "24px",
+								color: "#7A5C3A",
+								fontStyle: "italic",
 								marginBottom: price ? "20px" : "0",
 							}}
 						>
@@ -107,24 +114,27 @@ export async function GET(request: NextRequest) {
 					{price && (
 						<div
 							style={{
-								fontSize: "36px",
-								fontWeight: "600",
-								color: "#1A1A1A",
-								backgroundColor: "#FFFFFF",
-								padding: "12px 32px",
-								borderRadius: "8px",
-								border: "2px solid #E5E4DF",
+								display: "flex",
+								marginTop: "8px",
 							}}
 						>
-							{price}
+							<div
+								style={{
+									fontSize: "32px",
+									fontWeight: "700",
+									color: "#F5EFE6",
+									backgroundColor: "#4A2C17",
+									padding: "10px 28px",
+									borderRadius: "8px",
+								}}
+							>
+								{price}
+							</div>
 						</div>
 					)}
 				</div>
 			</div>
 		),
-		{
-			width: 1200,
-			height: 630,
-		},
+		{ width: 1200, height: 630 },
 	);
 }
